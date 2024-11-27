@@ -1,0 +1,94 @@
+'use client'
+import React, { useState, useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { useRouter } from "next/navigation";
+
+const Register = () => {
+  const { users, setUsers } = useContext(AppContext);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleRegister = () => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    
+    if (!emailPattern.test(email)) {
+      setError("Please enter a valid Gmail address.");
+      return;
+    }
+    // Check if the email already exists
+    const existingUser = users.find((user) => user.email === email);
+
+    if (existingUser) {
+      setError("Email is already registered. Please log in.");
+    } else if (!name || !email || !password) {
+      setError("Please fill in all fields.");
+    } else {
+      
+      // Add the new user
+      const newUser = {
+        id: users.length + 1,
+        name,
+        email,
+        password,
+        role: "User", // Default role
+      };
+      setUsers([...users, newUser]);
+      alert("Registration successful! Please go to Login page.");
+      router.push("/login"); // Redirect to login page
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-6 shadow-lg rounded-md w-96">
+        <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
+        {error && (
+          <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
+        )}
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full px-3 py-2 border rounded-md mb-4 text-black"
+        />
+        <input
+          type="email"
+          placeholder="name@gmail.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-3 py-2 border rounded-md mb-4 text-black"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full px-3 py-2 border rounded-md mb-4"
+        />
+        <button
+          onClick={handleRegister}
+          className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        >
+          Register
+        </button>
+        <div className="mt-4 text-center">
+          <p>
+            Already have an account?{" "}
+            <span
+              onClick={() => router.push("/login")}
+              className="text-blue-500 cursor-pointer"
+            >
+              Login
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
