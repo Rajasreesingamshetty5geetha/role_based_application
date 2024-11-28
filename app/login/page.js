@@ -14,8 +14,7 @@ const Login = () => {
   const router = useRouter();
   
 
-  const handleLogin = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
+  const handleLogin = ( ) => {
     const existingUser = users.find(
       (user) => user.email === email && user.password === password
     );
