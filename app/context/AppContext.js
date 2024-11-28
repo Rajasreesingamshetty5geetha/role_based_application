@@ -9,8 +9,8 @@ const AppProvider = ({ children }) => {
   const [teams, setTeams] = useState([]);
   const [members, setMembers] = useState([]);
   const [users, setUsers] = useState([
-    { id: 1, name: "John Doe", email: "john@gmail.com", password: "password123", role: "Admin",permissions: ['CRUD'] },
-    { id: 2, name: "Jane Smith", email: "jane@gmail.com", password: "password123", role: "User", permissions: ['VIEW_ROLE'] },
+    { id: 1, name: "John Doe", email: "john@gmail.com", password: "password123", role: "Admin"},
+    { id: 2, name: "Jane Smith", email: "jane@gmail.com", password: "password123", role: "User"},
   ]);
 
   useEffect(() => {
@@ -41,9 +41,7 @@ const AppProvider = ({ children }) => {
       )
     );
   };
-  const hasPermission = (permissions) => {
-    return permissions.some(permission => user?.permissions.includes(permission));
-  };
+  
 
   return (
     <AppContext.Provider
@@ -57,7 +55,7 @@ const AppProvider = ({ children }) => {
         users,
         setUsers,
         addMemberToTeam,
-        hasPermission,
+        
       }}
     >
       {children}
