@@ -62,7 +62,7 @@ const AddMemberModal = () => {
             className="w-full mb-2 px-3 py-2 border rounded-md"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            disabled={!hasPermission(['CRUD'])}
+            
           >
             <option value="User">User</option>
             <option value="Admin">Admin</option>
