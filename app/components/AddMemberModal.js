@@ -1,13 +1,13 @@
 'use client'
 import React, { useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { useRouter, useParams } from 'next/navigation'; // Add useParams
+import { useRouter, useParams } from 'next/navigation'; 
 
-const AddMemberModal = () => {  // Remove {id} prop
+const AddMemberModal = () => {  
   const { members, setMembers } = useContext(AppContext);
   const router = useRouter();
-  const params = useParams(); // Get params from the URL
-  const id = params.id; // Get id from params
+  const params = useParams(); 
+  const id = params.id; 
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -32,8 +32,6 @@ const AddMemberModal = () => {  // Remove {id} prop
     setMembers([...members, newMember]);
     router.push(`/teams/${id}`);
   };
-
-  // Add form submission handling
   const handleSubmit = (e) => {
     e.preventDefault();
     handleAddMember();

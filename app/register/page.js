@@ -18,7 +18,7 @@ const Register = () => {
       setError("Please enter a valid Gmail address.");
       return;
     }
-    // Check if the email already exists
+    
     const existingUser = users.find((user) => user.email === email);
 
     if (existingUser) {
@@ -27,17 +27,17 @@ const Register = () => {
       setError("Please fill in all fields.");
     } else {
       
-      // Add the new user
+    
       const newUser = {
         id: users.length + 1,
         name,
         email,
         password,
-        role: "User", // Default role
+        role: "User",
       };
       setUsers([...users, newUser]);
       alert("Registration successful! Please go to Login page.");
-      router.push("/login"); // Redirect to login page
+      router.push("/login"); 
     }
   };
 

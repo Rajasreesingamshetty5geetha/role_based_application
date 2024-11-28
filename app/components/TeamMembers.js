@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FaArrowLeft} from "react-icons/fa";
 
 
-const TeamMembers = ({ id }) => {  // Accept id as a prop
+const TeamMembers = ({ id }) => {  
   const { teams, members } = useContext(AppContext);
   const router = useRouter(); 
 

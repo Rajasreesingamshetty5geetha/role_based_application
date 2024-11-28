@@ -13,18 +13,17 @@ const AppProvider = ({ children }) => {
     { id: 2, name: "Jane Smith", email: "jane@gmail.com", password: "password123", role: "User", permissions: ['VIEW_ROLE'] },
   ]);
 
-  // Fetch initial data (teams and members)
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         const teamsRes = await mockApi.get("/api/teams");
-        setTeams(teamsRes.data || []); // Fallback to empty array if no data
+        setTeams(teamsRes.data || []); 
       } catch (error) {
         console.error("Error fetching teams data:", error);
       }
       try {
         const membersRes = await mockApi.get("/api/members");
-        setMembers(membersRes.data || []); // Fallback to empty array if no data
+        setMembers(membersRes.data || []); 
       } catch (error) {
         console.error("Error fetching members data:", error);
       }
@@ -33,12 +32,11 @@ const AppProvider = ({ children }) => {
     fetchInitialData();
   }, []);
 
-  // Add a member to a specific team
   const addMemberToTeam = (teamId, member) => {
     setTeams((prevTeams) =>
       prevTeams.map((team) =>
         team.id === teamId
-          ? { ...team, members: [...(team.members || []), member] } // Handle undefined `team.members`
+          ? { ...team, members: [...(team.members || []), member] } 
           : team
       )
     );

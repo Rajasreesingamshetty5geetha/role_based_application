@@ -12,10 +12,9 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch data from mockApi
   useEffect(() => {
     if (!user) {
-      router.push('/login'); // Redirect to login if user is not logged in
+      router.push('/login'); 
       return;
     }
 
@@ -27,10 +26,10 @@ const Dashboard = () => {
         const membersRes = await mockApi.get("/api/members");
         setMembers(membersRes.data);
 
-        setLoading(false); // Data loaded successfully
+        setLoading(false);
       } catch (err) {
         setError("Failed to load data.");
-        setLoading(false); // Stop loading even on failure
+        setLoading(false); 
       }
     };
 
@@ -38,7 +37,7 @@ const Dashboard = () => {
   }, [user, router]);
 
   if (!user) {
-    return null; // Prevent UI flash if user is not authenticated
+    return null; 
   }
 
   if (loading) {
@@ -58,7 +57,7 @@ const Dashboard = () => {
   }
 
   const handleLogout = () => {
-    router.push("/"); // Redirect to login page
+    router.push("/"); 
   };
 
   return (
