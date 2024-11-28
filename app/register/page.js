@@ -42,8 +42,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 shadow-lg rounded-md w-96">
+    <div className="flex items-center justify-center min-h-screen bg-[#2d3a4d]">
+      <div className="bg-[#1d2d44] p-6 shadow-lg rounded-md w-96">
         <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
         {error && (
           <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
@@ -71,7 +71,7 @@ const Register = () => {
         />
         <button
           onClick={handleRegister}
-          className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          className="w-full bg-[#2d3a4d] text-white px-4 py-2 rounded-md hover:bg-[#0b1118]"
         >
           Register
         </button>
@@ -80,7 +80,7 @@ const Register = () => {
             Already have an account?{" "}
             <span
               onClick={() => router.push("/login")}
-              className="text-blue-500 cursor-pointer"
+              className="text-blue-300   font-bold cursor-pointer"
             >
               Login
             </span>

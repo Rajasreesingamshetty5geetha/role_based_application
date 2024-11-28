@@ -1,66 +1,110 @@
-'use client';
-import React, { createContext, useState, useEffect } from "react";
-import { mockApi } from "../mock/api";
+"use client";
+import { createContext, useState } from "react";
 
-const AppContext = createContext();
+export const AppContext = createContext();
 
-const AppProvider = ({ children }) => {
+export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [teams, setTeams] = useState([]);
-  const [members, setMembers] = useState([]);
   const [users, setUsers] = useState([
-    { id: 1, name: "John Doe", email: "john@gmail.com", password: "password123", role: "Admin"},
-    { id: 2, name: "Jane Smith", email: "jane@gmail.com", password: "password123", role: "User"},
+    {
+      email: "john@gmail.com",
+      password: "password123",
+      role: "Admin"
+    },
+    {
+      email: "virat@gmail.com",
+      password: "User@123",
+      role: "User"
+    }
   ]);
 
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const teamsRes = await mockApi.get("/api/teams");
-        setTeams(teamsRes.data || []); 
-      } catch (error) {
-        console.error("Error fetching teams data:", error);
-      }
-      try {
-        const membersRes = await mockApi.get("/api/members");
-        setMembers(membersRes.data || []); 
-      } catch (error) {
-        console.error("Error fetching members data:", error);
-      }
-    };
+  const [teams, setTeams] = useState([
+    { id: "1", name: "Development Team", description: "Frontend and Backend Development" },
+    { id: "2", name: "Design Team", description: "UI/UX Design" },
+    { id: "3", name: "Marketing Team", description: "Digital Marketing" },
+  ]);
 
-    fetchInitialData();
-  }, []);
+  const [teamMembers, setTeamMembers] = useState([
+    { 
+      id: 1, 
+      name: "John Doe", 
+      email: "john@example.com",
+      teamId: "1", 
+      role: "Admin", 
+      isActive: true,
+      status: "active" 
+    },
+    { 
+      id: 2, 
+      name: "Jane Smith", 
+      email: "jane@example.com",
+      teamId: "1", 
+      role: "User", 
+      isActive: true,
+      status: "active"
+    },
+  ]);
 
-  const addMemberToTeam = (teamId, member) => {
-    setTeams((prevTeams) =>
-      prevTeams.map((team) =>
-        team.id === teamId
-          ? { ...team, members: [...(team.members || []), member] } 
-          : team
+  const updateMemberStatus = (memberId, isActive) => {
+    setTeamMembers(prevMembers =>
+      prevMembers.map(member =>
+        member.id === memberId
+          ? { 
+              ...member, 
+              isActive,
+              status: isActive ? "active" : "inactive"
+            }
+          : member
       )
     );
   };
-  
+
+  const addTeamMember = (newMember) => {
+    setTeamMembers(prevMembers => [...prevMembers, {
+      ...newMember,
+      id: Date.now(),
+      status: "active",
+      isActive: true
+    }]);
+  };
+
+  const updateTeamMember = (memberId, updatedData) => {
+    setTeamMembers(prevMembers =>
+      prevMembers.map(member =>
+        member.id === memberId
+          ? { ...member, ...updatedData }
+          : member
+      )
+    );
+  };
+
+  const deleteTeamMember = (memberId) => {
+    setTeamMembers(prevMembers =>
+      prevMembers.map(member =>
+        member.id === memberId
+          ? { ...member, status: "deleted", isActive: false }
+          : member
+      )
+    );
+  };
 
   return (
-    <AppContext.Provider
-      value={{
-        user,
-        setUser,
+    <AppContext.Provider 
+      value={{ 
+        user, 
+        setUser, 
+        users, 
+        setUsers,
         teams,
         setTeams,
-        members,
-        setMembers,
-        users,
-        setUsers,
-        addMemberToTeam,
-        
+        teamMembers,
+        updateMemberStatus,
+        addTeamMember,
+        updateTeamMember,
+        deleteTeamMember
       }}
     >
       {children}
     </AppContext.Provider>
   );
 };
-
-export { AppContext, AppProvider };

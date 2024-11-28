@@ -1,94 +1,54 @@
-'use client';
+"use client";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import { useRouter } from "next/navigation";
-import { mockApi } from "../mock/api";
+import Link from 'next/link';
 
 const Dashboard = () => {
   const router = useRouter();
   const { user } = useContext(AppContext);
-  const [teams, setTeams] = useState([]);
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [teams, setTeams] = useState([
+    { id: 1, name: "Development Team", description: "Frontend and Backend Development" },
+    { id: 2, name: "Design Team", description: "UI/UX Design" },
+    { id: 3, name: "Marketing Team", description: "Digital Marketing" },
+  ]);
 
   useEffect(() => {
     if (!user) {
-      router.push('/login'); 
-      return;
+      router.push("/login");
     }
-
-    const fetchData = async () => {
-      try {
-        const teamsRes = await mockApi.get("/api/teams");
-        setTeams(teamsRes.data);
-
-        const membersRes = await mockApi.get("/api/members");
-        setMembers(membersRes.data);
-
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to load data.");
-        setLoading(false); 
-      }
-    };
-
-    fetchData();
   }, [user, router]);
 
-  if (!user) {
-    return null; 
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen text-red-500">
-        {error}
-      </div>
-    );
-  }
-
-  const handleLogout = () => {
-    router.push("/"); 
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <header className="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
-        
+    <div className="min-h-screen bg-[#0d1321]">
+      <header className="bg-[#1d2d44] text-white p-4 flex justify-between items-center">
         <h1 className="text-xl font-bold">Welcome, {user?.email}</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-        >
-          Logout
-        </button>
+        <div className="flex items-center gap-4">
+          <span>{user?.isAdmin ? "Admin" : "User"}</span>
+          <button
+            onClick={() => router.push("/login")}
+            className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded"
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       <main className="p-6">
-        {/* Teams Section */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Teams</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl font-bold mb-6">Teams</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {teams.map((team) => (
-              <div
-                key={team.id}
-                onClick={() => router.push(`/teams/${team.id}`)}
-                className="p-4 bg-white shadow-md rounded-md hover:shadow-lg cursor-pointer transition"
-              >
-                <h3 className="text-lg font-medium">{team.name}</h3>
-              </div>
+              <Link href={`/teams/${team.id}`} key={team.id}>
+                <div className="bg-[#1d2d44] rounded-lg shadow-md p-6 hover:shadow-lg transition cursor-pointer">
+                  <h3 className="text-xl font-semibold mb-2">{team.name}</h3>
+                  <p className="text-gray-400">{team.description}</p>
+                </div>
+              </Link>
             ))}
           </div>
-        </section>
+        </div>
       </main>
     </div>
   );

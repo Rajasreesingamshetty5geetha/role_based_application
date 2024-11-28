@@ -4,6 +4,7 @@ import { AppContext } from "../context/AppContext";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+
 const Login = () => {
   const { setUser, users } = useContext(AppContext);
   const [email, setEmail] = useState("");
@@ -13,15 +14,24 @@ const Login = () => {
   const router = useRouter();
   
 
-  const handleLogin = () => {
-    const existingUser = users.find((user) => user.email === email && user.password === password);
+  const handleLogin = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    const existingUser = users.find(
+      (user) => user.email === email && user.password === password
+    );
     if (!existingUser) {
       setError("Invalid email or password.");
     } else {
-      setUser(existingUser);
+
+      const userWithRole = {
+        ...existingUser,
+        isAdmin: existingUser.role.toLowerCase() === 'admin'
+      };
+      setUser(userWithRole);
       router.push("/dashboard");
     }
   };
+  
 
   const handleRegister = () => {
     router.push("/register");
@@ -30,6 +40,13 @@ const Login = () => {
     setView(!viewPass)
   };
   
+  const login = async (credentials) => {
+    const response = await mockApi.post('/api/login', credentials);
+    const userData = response.data;
+    setUser(userData);
+  };
+
+
 
   return (
     <div className="flex items-center justify-center h-screen bg-[#0d1321]">
@@ -53,7 +70,7 @@ const Login = () => {
         <button
           type="button"
           onClick={handleView}
-          className="absolute -mx-12 top-[51%] transform -translate-y-1/2 text-gray-700 hover:text-gray-700"
+          className="absolute -mx-12 top-[45%] transform -translate-y-1/2 text-gray-700 hover:text-gray-700"
         >
           {viewPass ? (
             <FaEyeSlash className="text-xl" />
@@ -67,7 +84,7 @@ const Login = () => {
         >
           Login
         </button>
-        <p className="mt-2 text-sm">
+        <p className="mt-2 text-sm mb-2">
           Don't have an account?{" "}
           <span
             onClick={handleRegister}
@@ -76,6 +93,25 @@ const Login = () => {
             Register here
           </span>
         </p>
+        <table className="min-w-full  bg-[#3e5c76] rounded-lg">
+          <tbody className=" p-2 justify-items-center justify-evenly">
+            <tr className=" border-b-[1px] border-[#2a3a47]">
+              <td>Email</td>
+              <td>Password</td>
+              <td>Role</td>
+            </tr>
+            <tr>
+              <td>john@gmail.com</td>
+              <td>password123</td>
+              <td>Admin</td>
+            </tr>
+            <tr>
+              <td>virat@gmail.com</td>
+              <td>User@123</td>
+              <td>User</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
-'use client'
-import TeamMembers from '@/app/components/TeamMembers'
-import { useParams } from 'next/navigation'
+"use client";
+import { use } from 'react';
+import TeamMembers from "../../components/TeamMembers";
 
-export default function TeamPage() {
-  const params = useParams()
-  return <TeamMembers id={params.id} />
-}
+const TeamPage = ({ params }) => {
+  const resolvedParams = use(params);
+  return <TeamMembers teamId={resolvedParams.id} />;
+};
+
+export default TeamPage;
